@@ -1,0 +1,30 @@
+<div id="app"></div>
+<script>
+    // 传入对象obj，给他定义一个属性key，他的初始值是val
+    // 该属性未来的访问会被拦截，这样就是先了拦截
+    function defineReactive(obj, key, val) {
+        Object.defineProperty(obj, key, {
+            get() {
+                console.log("get", key);
+                return val;
+            },
+            set(v) {
+                if (v !== val) {
+                    console.log("set", key);
+                    val = v;
+                    updater()
+                }
+            }
+        })
+    }
+
+    const obj={};
+    defineReactive(obj,"foo","");
+    function updater() {
+        app.innerText=obj.foo;
+    }
+
+    setInterval(() => {
+        obj.foo=new Date().toLocaleTimeString();
+    }, 1000);
+</script>
